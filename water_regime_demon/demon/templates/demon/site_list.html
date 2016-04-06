@@ -1,0 +1,20 @@
+{% load time_utils %}
+
+<h1>Water Regime</h1>
+
+<h2>Overall Sites</h2>
+<table>
+  <tr>
+    <th>Site Name</th>
+    <th>Safety Level</th>
+    <th>Last Crawl Date</th>
+  </tr>
+{% for site in sites %}
+  <tr>
+    <td><a href="{% url 'site_data' site_id=site.id %}">{{ site.site_name }}</a></td>
+    <td>{{ site.safety_level }}</td>
+    <td>{{ site.crawl_date|to_datetime|date:"c" }}</td>
+  </tr>
+{% endfor %}
+</table>
+

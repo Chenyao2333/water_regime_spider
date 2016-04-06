@@ -1,0 +1,24 @@
+{% load time_utils %}
+
+<h1>{{ site.site_name }}</h1>
+
+{% if site.crawl_date %}
+<p><a href="{% url 'export_csv' site_id=site.id %}{{ site.site_name }}_{{ site.crawl_date|to_datetime|date:"c" }}.csv">Export as CSV</a></p>
+{% endif %}
+<p>Last update time: {{ site.crawl_date|to_datetime|date:"c" }}</p>
+
+<table>
+  <tr>
+    <th>Date</th>
+    <th>Water Flow</th>
+    <th>Water Level</th>
+  </tr>
+{% for p in points %}
+  <tr>
+    <td>{{ p.0|to_datetime|date:"c" }}</td>
+    <td>{{ p.1 }}</td>
+    <td>{{ p.2 }}</td>
+  </tr>
+{% endfor %}
+</table>
+
