@@ -27,6 +27,9 @@ logging.basicConfig(
 def to_unix(date):
     return int(time.mktime(date.timetuple()))
 
+def to_datetime(ts):
+    return datetime.datetime.fromtimestamp(int(ts))
+
 class DataItem(object):
     def __init__(self, id = None, date = None , value = None):
         self.id = id
@@ -212,14 +215,39 @@ class Spider(object):
             except Exception as e:
                 print e
                 logging.exception(e)
+    
+    def fetch_from_last_update(self):
+        cur = self.db.cursor()
+        cur.execute("SELECT id, site_id, site_name, crawl_date FROM site WHERE deleted=0 AND is_crawl=1 ORDER BY crawl_date ASC, id ASC")
+
+        rows = cur.fetchall()
+        for (id, site_id, site_name, crawl_date) in rows:
+            crawl_date = to_datetime(crawl_date)
+            if datetime.datetime.now() - crawl_date < datetime.timedelta(days=1):
+                continue
+
+            date = crawl_date.date() - datetime.timedelta(days=1)
+            print "Fetcing %s id=%s site_id=%s data." % (site_name, id, site_id)
+            try:
+                self.fetch(site_id, date)
+            except Exception as e:
+                print e
+                logging.exception(e)
+
+def run(db_path):
+    s = Spider(db_path)
+    while True:
+        s.fetch_from_last_update()
+        time.sleep(300)
 
 if __name__ == "__main__":
     base_dir = os.path.dirname(os.path.abspath(__file__))
     db_path = os.path.join(base_dir, "test_01.db")
 
-    s = Spider(db_path)
+    run(db_path)
+    #s = Spider(db_path)
     
     #sites = ["81100950"]
     #for site in sites:
     #    s.fetch(site, start_date=datetime.date.today() - datetime.timedelta(days=365)) 
-    s.fetch_all(start_date=datetime.date.today() - datetime.timedelta(days=7))
+    #s.fetch_all(start_date=datetime.date.today() - datetime.timedelta(days=30))
