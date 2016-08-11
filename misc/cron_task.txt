@@ -1,0 +1,1 @@
+30 23 * * * /home/louch/virenv/spider_env/bin/python /home/louch/projects/spider/spider.py
