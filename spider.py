@@ -18,9 +18,12 @@ from urllib import urlencode
 #socks.setdefaultproxy(socks.PROXY_TYPE_SOCKS5, "127.0.0.1", 1080)
 #socket.socket = socks.socksocket
 
+BASE_DIR= os.path.dirname(os.path.abspath(__file__))
+DB_PATH = os.path.join(BASE_DIR, "databases", "test_01.db")
+
 logging.basicConfig(
-    level=logging.DEBUG,
-    filename="/home/louch/local/log/spider.log",
+    level=logging.INFO,
+    # filename="/home/louch/local/log/spider.log",
     format='[%(asctime)s] [%(levelname)s] %(message)s'
 )
 
@@ -209,7 +212,7 @@ class Spider(object):
             #    print "Skip %s!" % site_name
             #    continue
 
-            print "Fetcing %s id=%s site_id=%s data." % (site_name, id, site_id)
+            #print "Fetcing %s id=%s site_id=%s data." % (site_name, id, site_id)
             try:
                 self.fetch(site_id, start_date)
             except Exception as e:
@@ -241,10 +244,7 @@ def run(db_path):
         time.sleep(300)
 
 if __name__ == "__main__":
-    base_dir = os.path.dirname(os.path.abspath(__file__))
-    db_path = os.path.join(base_dir, "test_01.db")
-
-    run(db_path)
+    run(DB_PATH)
     #s = Spider(db_path)
     
     #sites = ["81100950"]
