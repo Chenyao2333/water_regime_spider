@@ -230,7 +230,7 @@ class Spider(object):
                 continue
 
             date = crawl_date.date() - datetime.timedelta(days=1)
-            print "Fetcing %s id=%s site_id=%s data." % (site_name, id, site_id)
+            logging.info("Fetcing %s id=%s site_id=%s data." % (site_name, id, site_id))
             try:
                 self.fetch(site_id, date)
             except Exception as e:
