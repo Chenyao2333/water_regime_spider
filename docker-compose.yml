@@ -2,6 +2,7 @@ version: '2'
 services:
   water_regime_spider:
     build: .
+    restart: always
     ports:
      - "127.0.0.1:8080:8080"
      - "127.0.0.1:9000:9000"
