@@ -5,6 +5,8 @@ BASE_DIR=$(dirname $(dirname $FILE_PATH))
 INITIAL_DB=$BASE_DIR/misc/test_01.db
 DB=$BASE_DIR/databases/test_01.db
 
+mkdir -p $BASE_DIR/databases
+
 if [ ! -f $DB ]
 then
     echo "Copying database file."
